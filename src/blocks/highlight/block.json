@@ -1,6 +1,7 @@
 {
+	"apiVersion": 2,
 	"name": "coblocks/highlight",
-	"category": "formatting",
+	"category": "text",
 	"attributes": {
 		"content": {
 			"type": "string",
@@ -21,12 +22,12 @@
 		},
 		"customTextColor": {
 			"type": "string"
-		},
-		"fontSize": {
-			"type": "string"
-		},
-		"customFontSize": {
-			"type": "number"
 		}
+	},
+	"supports": {
+		"typography": {
+			"fontSize": true
+		},
+		"fontSize": true
 	}
 }

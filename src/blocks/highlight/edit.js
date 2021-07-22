@@ -17,18 +17,15 @@ import { computeFontSize } from '../../utils/helper';
 import { __ } from '@wordpress/i18n';
 import { Component, Fragment } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
-import { RichText, withFontSizes } from '@wordpress/block-editor';
+import { RichText, useBlockProps } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
 
 /**
  * Block edit function
+ *
+ * @param {Object} props Block props
  */
-export class Edit extends Component {
-	constructor() {
-		super( ...arguments );
-		this.splitBlock = this.splitBlock.bind( this );
-	}
-
+const Edit = ( props ) => {
 	/**
 	 * Split handler for RichText value, namely when content is pasted or the
 	 * user presses the Enter key.
@@ -42,13 +39,13 @@ export class Edit extends Component {
 	 * @param {...WPBlock} blocks Optional blocks inserted between the before
 	 *                            and after value blocks.
 	 */
-	splitBlock( before, after, ...blocks ) {
+	const splitBlock = ( before, after, ...blocks ) => {
 		const {
 			attributes,
 			insertBlocksAfter,
 			setAttributes,
 			onReplace,
-		} = this.props;
+		} = props;
 
 		if ( after ) {
 			// Append "After" content as a new paragraph block to the end of
@@ -71,67 +68,65 @@ export class Edit extends Component {
 			// of before will be strictly equal to the current content.
 			setAttributes( { content: before } );
 		}
-	}
+	};
 
-	render() {
-		const {
-			attributes,
-			backgroundColor,
-			className,
-			mergeBlocks,
-			onReplace,
-			setAttributes,
-			textColor,
-			fontSize,
-		} = this.props;
+	const blockProps = useBlockProps();
 
-		const {
-			content,
-			align,
-		} = attributes;
+	console.log( blockProps );
 
-		const classes = classnames( 'wp-block-coblocks-highlight__content',
-			backgroundColor && {
-				'has-background': backgroundColor.color,
-				[ backgroundColor.class ]: backgroundColor.class,
-			},
-			textColor && {
-				'has-text-color': textColor.color,
-				[ textColor.class ]: textColor.class,
-			},
-			fontSize?.class && {
-				[ fontSize?.class ]: fontSize?.class,
-			}
-		);
+	const {
+		attributes,
+		backgroundColor,
+		className,
+		mergeBlocks,
+		onReplace,
+		setAttributes,
+		textColor,
+	} = props;
 
-		return (
-			<Fragment>
-				<Controls { ...this.props } />
-				<Inspector { ...this.props } />
-				<p className={ className } style={ { textAlign: align } }>
-					<RichText
-						tagName="mark"
-						placeholder={ __( 'Add highlighted text…', 'coblocks' ) }
-						value={ content }
-						onChange={ ( value ) => setAttributes( { content: value } ) }
-						onMerge={ mergeBlocks }
-						onSplit={ this.splitBlock }
-						onRemove={ () => onReplace( [] ) }
-						className={ classes }
-						style={ {
-							backgroundColor: backgroundColor?.color,
-							color: textColor?.color,
-							fontSize: computeFontSize( fontSize ) ?? undefined,
-						} }
-						keepPlaceholderOnFocus
-					/>
-				</p>
-			</Fragment>
-		);
-	}
-}
+	const {
+		content,
+		align,
+	} = attributes;
+
+	const classes = classnames( 'wp-block-coblocks-highlight__content',
+		backgroundColor && {
+			'has-background': backgroundColor.color,
+			[ backgroundColor.class ]: backgroundColor.class,
+		},
+		textColor && {
+			'has-text-color': textColor.color,
+			[ textColor.class ]: textColor.class,
+		},
+	);
+
+	return (
+		<Fragment>
+			<Controls { ...props } />
+			<Inspector { ...props } />
+			<p { ...blockProps } className={ className } style={ { textAlign: align } }>
+				<RichText
+					tagName="mark"
+					placeholder={ __( 'Add highlighted text…', 'coblocks' ) }
+					value={ content }
+					onChange={ ( value ) => setAttributes( { content: value } ) }
+					onMerge={ mergeBlocks }
+					onSplit={ splitBlock }
+					onRemove={ () => onReplace( [] ) }
+					className={ classes }
+					style={ {
+						backgroundColor: backgroundColor?.color,
+						color: textColor?.color,
+						// fontSize: computeFontSize( fontSize ) ?? undefined,
+					} }
+					keepPlaceholderOnFocus
+				/>
+			</p>
+		</Fragment>
+	);
+};
 
 export default compose( [
 	applyWithColors,
-	withFontSizes( 'fontSize' ),
+	// withFontSizes( 'fontSize' ),
 ] )( Edit );

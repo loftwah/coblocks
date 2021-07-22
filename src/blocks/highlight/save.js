@@ -1,4 +1,9 @@
 /**
+ * Internal dependencies
+ */
+import { computeFontSize } from '../../utils/helper';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
@@ -8,7 +13,8 @@ import classnames from 'classnames';
  */
 import { RichText, getColorClassName, getFontSizeClass } from '@wordpress/block-editor';
 
-const save = ( { attributes } ) => {
+const save = ( props ) => {
+	console.log( props.attributes );
 	const {
 		backgroundColor,
 		content,
@@ -18,7 +24,7 @@ const save = ( { attributes } ) => {
 		fontSize,
 		align,
 		textColor,
-	} = attributes;
+	} = props.attributes;
 
 	const textClass = getColorClassName( 'color', textColor );
 
@@ -37,11 +43,14 @@ const save = ( { attributes } ) => {
 	const styles = {
 		backgroundColor: backgroundClass ? undefined : customBackgroundColor,
 		color: textClass ? undefined : customTextColor,
-		fontSize: fontSizeClass ? undefined : customFontSize,
+		fontSize: computeFontSize( fontSize ) ?? customFontSize ?? undefined,
 	};
 
 	return RichText.isEmpty( content ) ? null : (
-		<p style={ { textAlign: align } }>
+		<p style={ {
+			textAlign: align,
+			fontSize: computeFontSize( fontSize ) ?? customFontSize ?? undefined,
+		} }>
 			<RichText.Content
 				tagName="mark"
 				className={ classes }
