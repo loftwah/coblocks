@@ -8,7 +8,7 @@ import { registerBlockType, createBlock, serialize } from '@wordpress/blocks';
 /**
  * Internal dependencies.
  */
-import { name, settings } from '../index';
+import { name, settings, metadata } from '../index';
 
 // Make variables accessible for all tests.
 let block;
@@ -18,7 +18,7 @@ let serializedBlock;
 describe( 'coblocks/highlight', () => {
 	beforeAll( () => {
 		// Register the block.
-		registerBlockType( name, { category: 'common', ...settings } );
+		registerBlockType( name, { ...metadata, category: 'common', ...settings } );
 	} );
 
 	beforeEach( () => {
@@ -89,7 +89,7 @@ describe( 'coblocks/highlight', () => {
 
 		blockDOM = new JSDOM( serializedBlock );
 		expect(
-			blockDOM.window.document.querySelector( '.wp-block-coblocks-highlight__content' )
+			blockDOM.window.document.querySelector( '.wp-block-coblocks-highlight' )
 		).toHaveStyle( `background-color: ${ block.attributes.customBackgroundColor }` );
 	} );
 
@@ -99,17 +99,17 @@ describe( 'coblocks/highlight', () => {
 
 		blockDOM = new JSDOM( serializedBlock );
 		expect(
-			blockDOM.window.document.querySelector( '.wp-block-coblocks-highlight__content' )
+			blockDOM.window.document.querySelector( '.wp-block-coblocks-highlight' )
 		).toHaveClass( `has-${ block.attributes.fontSize }-font-size` );
 	} );
 
 	it( 'should apply custom font size with inline css', () => {
-		block.attributes.customFontSize = 50;
+		block.attributes.style.typography.fontSize = '50px';
 		serializedBlock = serialize( block );
 
 		blockDOM = new JSDOM( serializedBlock );
 		expect(
-			blockDOM.window.document.querySelector( '.wp-block-coblocks-highlight__content' )
-		).toHaveStyle( `font-size: ${ block.attributes.customFontSize }px` );
+			blockDOM.window.document.querySelector( '.wp-block-coblocks-highlight' )
+		).toHaveStyle( `font-size: ${ block.attributes.style.typography.fontSize }px` );
 	} );
 } );

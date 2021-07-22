@@ -11,10 +11,9 @@ import classnames from 'classnames';
 /**
  * WordPress dependencies
  */
-import { RichText, getColorClassName, getFontSizeClass } from '@wordpress/block-editor';
+import { RichText, getColorClassName, useBlockProps } from '@wordpress/block-editor';
 
 const save = ( props ) => {
-	console.log( props.attributes );
 	const {
 		backgroundColor,
 		content,
@@ -30,14 +29,11 @@ const save = ( props ) => {
 
 	const backgroundClass = getColorClassName( 'background-color', backgroundColor );
 
-	const fontSizeClass = getFontSizeClass( fontSize );
-
 	const classes = classnames( 'wp-block-coblocks-highlight__content', {
 		'has-text-color': textColor || customTextColor,
 		[ textClass ]: textClass,
 		'has-background': backgroundColor || customBackgroundColor,
 		[ backgroundClass ]: backgroundClass,
-		[ fontSizeClass ]: fontSizeClass,
 	} );
 
 	const styles = {
@@ -47,10 +43,7 @@ const save = ( props ) => {
 	};
 
 	return RichText.isEmpty( content ) ? null : (
-		<p style={ {
-			textAlign: align,
-			fontSize: computeFontSize( fontSize ) ?? customFontSize ?? undefined,
-		} }>
+		<p { ...useBlockProps.save( { style: { textAlign: align } } ) }>
 			<RichText.Content
 				tagName="mark"
 				className={ classes }

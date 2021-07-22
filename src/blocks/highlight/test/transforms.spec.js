@@ -10,12 +10,12 @@ registerCoreBlocks();
  * Internal dependencies.
  */
 import * as helpers from '../../../../.dev/tests/jest/helpers';
-import { name, settings } from '../index';
+import { name, settings, metadata } from '../index';
 
 describe( 'coblocks/highlight transforms', () => {
 	beforeAll( () => {
 		// Register the block.
-		registerBlockType( name, { category: 'common', ...settings } );
+		registerBlockType( name, { ...metadata, category: 'common', ...settings } );
 	} );
 
 	it( 'should transform from core/paragraph block', () => {

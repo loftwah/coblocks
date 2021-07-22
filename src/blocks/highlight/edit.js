@@ -113,7 +113,6 @@ const Edit = ( props ) => {
 						backgroundColor: backgroundColor?.color,
 						color: textColor?.color,
 					} }
-					keepPlaceholderOnFocus
 				/>
 			</p>
 		</>

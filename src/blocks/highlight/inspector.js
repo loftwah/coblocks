@@ -7,15 +7,13 @@ import applyWithColors from './colors';
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Component, Fragment } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
-import { InspectorControls, ContrastChecker, PanelColorSettings, FontSizePicker, withFontSizes } from '@wordpress/block-editor';
-import { PanelBody } from '@wordpress/components';
+import { InspectorControls, ContrastChecker, PanelColorSettings } from '@wordpress/block-editor';
 
 /**
  * Inspector controls
  *
- * @param props
+ * @param {Object} props Block props
  */
 const Inspector = ( props ) => {
 	const {
@@ -27,21 +25,9 @@ const Inspector = ( props ) => {
 		fallbackTextColor,
 	} = props;
 
-	console.log( props );
-
 	return (
-		<Fragment>
+		<>
 			<InspectorControls>
-				{ /* <PanelBody title={ __( 'Highlight settings', 'coblocks' ) } className="blocks-font-size">
-						<FontSizePicker
-							fallbackFontSize={ fallbackFontSize }
-							value={ fontSize.size }
-							onChange={ ( size ) => {
-								setFontSize( size );
-								this.props.setAttributes( { customFontSize: size } );
-							} }
-						/>
-					</PanelBody> */ }
 				<PanelColorSettings
 					title={ __( 'Color settings', 'coblocks' ) }
 					initialOpen={ false }
@@ -68,11 +54,10 @@ const Inspector = ( props ) => {
 					/>
 				</PanelColorSettings>
 			</InspectorControls>
-		</Fragment>
+		</>
 	);
 };
 
 export default compose( [
 	applyWithColors,
-	// withFontSizes( 'fontSize' ),
 ] )( Inspector );
