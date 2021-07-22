@@ -111,13 +111,14 @@ const registerBlock = ( block ) => {
 
 	let { category } = block;
 
-	const { name, settings } = block;
+	const { name, settings, metadata } = block;
 
 	if ( ! supportsCollections() && ! name.includes( 'gallery' ) ) {
 		category = 'coblocks';
 	}
 
 	registerBlockType( name, {
+		...metadata,
 		category,
 		...settings,
 	} );

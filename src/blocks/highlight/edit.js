@@ -9,13 +9,11 @@ import classnames from 'classnames';
 import applyWithColors from './colors';
 import Controls from './controls';
 import Inspector from './inspector';
-import { computeFontSize } from '../../utils/helper';
 
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Component, Fragment } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 import { RichText, useBlockProps } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
@@ -70,14 +68,11 @@ const Edit = ( props ) => {
 		}
 	};
 
-	const blockProps = useBlockProps();
-
-	console.log( blockProps );
+	const blockProps = useBlockProps( { style: { textAlign: align } } );
 
 	const {
 		attributes,
 		backgroundColor,
-		className,
 		mergeBlocks,
 		onReplace,
 		setAttributes,
@@ -101,10 +96,10 @@ const Edit = ( props ) => {
 	);
 
 	return (
-		<Fragment>
+		<>
 			<Controls { ...props } />
 			<Inspector { ...props } />
-			<p { ...blockProps } className={ className } style={ { textAlign: align } }>
+			<p { ...blockProps }>
 				<RichText
 					tagName="mark"
 					placeholder={ __( 'Add highlighted text…', 'coblocks' ) }
@@ -117,16 +112,14 @@ const Edit = ( props ) => {
 					style={ {
 						backgroundColor: backgroundColor?.color,
 						color: textColor?.color,
-						// fontSize: computeFontSize( fontSize ) ?? undefined,
 					} }
 					keepPlaceholderOnFocus
 				/>
 			</p>
-		</Fragment>
+		</>
 	);
 };
 
 export default compose( [
 	applyWithColors,
-	// withFontSizes( 'fontSize' ),
 ] )( Edit );

@@ -27,7 +27,7 @@
 	"supports": {
 		"typography": {
 			"fontSize": true
-		},
-		"fontSize": true
-	}
+		}
+	},
+	"style": "wp-block-coblocks-highlight"
 }
